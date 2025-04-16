@@ -1,0 +1,5 @@
+# Discord Botのトークン
+DISCORD_BOT_TOKEN=your_discord_bot_token_here
+
+# DiscordのターゲットチャンネルID
+TARGET_CHANNEL_ID=123456789012345678
