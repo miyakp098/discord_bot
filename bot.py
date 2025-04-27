@@ -18,13 +18,9 @@ intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # コマンドの読み込み
-from commands.music import setup_music_commands
-from commands.controls import setup_control_commands
-from commands.local_play import setup_local_play_commands
+from commands.voice_controls import setup_control_commands
 
-setup_music_commands(bot)
 setup_control_commands(bot)
-setup_local_play_commands(bot)
 
 # 起動時の処理
 @bot.event

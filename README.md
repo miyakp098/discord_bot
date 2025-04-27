@@ -24,7 +24,7 @@ pip install pytest discord python-dotenv yt-dlp PyNaCl
 ## ボットの起動
 以下のコマンドでボットを起動します:
 ```bash
-python discord_run.py
+python bot.py
 ```
 
 ## ボットの終了

@@ -1,5 +1,5 @@
 import os
-from discord.ext import commands
+import discord
 from utils.voice import connect_to_voice_channel
 
 def setup_local_play_commands(bot):
