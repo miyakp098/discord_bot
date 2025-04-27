@@ -1,3 +1,5 @@
+import discord
+
 async def connect_to_voice_channel(ctx):
     if ctx.author.voice:
         channel = ctx.author.voice.channel

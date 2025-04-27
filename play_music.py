@@ -1,4 +1,3 @@
-
 import asyncio
 
 import discord
@@ -28,21 +27,37 @@ ytdl = youtube_dl.YoutubeDL(ytdl_format_options)
 
 
 class YTDLSource(discord.PCMVolumeTransformer):
-    def __init__(self, source, *, data, volume=1):
+    def __init__(self, source: discord.AudioSource, *, data: dict, volume: float = 1.0):
+        """
+        YTDLSourceクラスの初期化。
+
+        Args:
+            source (discord.AudioSource): 音声ソース。
+            data (dict): YouTubeから取得したデータ。
+            volume (float, optional): 音量。デフォルトは1.0。
+        """
         super().__init__(source, volume)
-
         self.data = data
-
         self.title = data.get('title')
         self.url = data.get('url')
 
     @classmethod
-    async def from_url(cls, url, *, loop=None, stream=False):
+    async def from_url(cls, url: str, *, loop: asyncio.AbstractEventLoop | None = None, stream: bool = False) -> 'YTDLSource':
+        """
+        指定されたURLから音声ソースを生成します。
+
+        Args:
+            url (str): YouTubeのURL。
+            loop (asyncio.AbstractEventLoop, optional): イベントループ。デフォルトはNone。
+            stream (bool, optional): ストリーミングモードかどうか。デフォルトはFalse。
+
+        Returns:
+            YTDLSource: 生成された音声ソース。
+        """
         loop = loop or asyncio.get_event_loop()
         data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=not stream))
 
         if 'entries' in data:
-            # take first item from a playlist
             data = data['entries'][0]
 
         filename = data['url'] if stream else ytdl.prepare_filename(data)

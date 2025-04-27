@@ -2,9 +2,27 @@ import discord
 from utils.youtube import get_youtube_audio
 from utils.voice import connect_to_voice_channel
 
-def setup_control_commands(bot):
+def setup_control_commands(bot: discord.ext.commands.Bot) -> None:
+    """
+    音声制御コマンドを設定します。
+
+    Args:
+        bot (discord.ext.commands.Bot): DiscordのBotオブジェクト。
+
+    Returns:
+        None
+    """
     @bot.command()
-    async def pause(ctx):
+    async def pause(ctx: discord.ext.commands.Context) -> None:
+        """
+        再生中の音楽を一時停止します。
+
+        Args:
+            ctx (discord.ext.commands.Context): コマンドのコンテキスト。
+
+        Returns:
+            None
+        """
         voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_playing():
             voice_client.pause()
@@ -13,7 +31,16 @@ def setup_control_commands(bot):
             await ctx.send("再生中の音楽がありません。")
 
     @bot.command()
-    async def resume(ctx):
+    async def resume(ctx: discord.ext.commands.Context) -> None:
+        """
+        一時停止中の音楽を再開します。
+
+        Args:
+            ctx (discord.ext.commands.Context): コマンドのコンテキスト。
+
+        Returns:
+            None
+        """
         voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_paused():
             voice_client.resume()
@@ -22,7 +49,16 @@ def setup_control_commands(bot):
             await ctx.send("一時停止中の音楽がありません。")
 
     @bot.command()
-    async def stop(ctx):
+    async def stop(ctx: discord.ext.commands.Context) -> None:
+        """
+        再生中の音楽を停止します。
+
+        Args:
+            ctx (discord.ext.commands.Context): コマンドのコンテキスト。
+
+        Returns:
+            None
+        """
         voice_client = discord.utils.get(ctx.bot.voice_clients, guild=ctx.guild)
         if voice_client and voice_client.is_playing():
             voice_client.stop()
@@ -31,18 +67,26 @@ def setup_control_commands(bot):
             await ctx.send("再生中の音楽がありません。")
 
     @bot.command()
-    async def play(ctx, url):
+    async def play(ctx: discord.ext.commands.Context, url: str) -> None:
+        """
+        指定されたURLの音楽を再生します。
+
+        Args:
+            ctx (discord.ext.commands.Context): コマンドのコンテキスト。
+            url (str): 再生するYouTubeのURL。
+
+        Returns:
+            None
+        """
         voice_client = await connect_to_voice_channel(ctx)
         if not voice_client:
             return
 
-        # YouTube音源を取得
         audio_source, title = await get_youtube_audio(url)
         if not audio_source:
             await ctx.send("音源の取得に失敗しました。")
             return
 
-        # 音楽を再生
         try:
             voice_client.play(audio_source, after=lambda e: print(f"再生終了: {e}" if e else "再生が完了しました。"))
             await ctx.send(f"再生中: {title}")

@@ -1,7 +1,17 @@
 import yt_dlp as youtube_dl
 import discord
+from typing import Optional
 
-async def get_youtube_audio(url):
+async def get_youtube_audio(url: str) -> tuple[Optional[discord.FFmpegPCMAudio], Optional[str]]:
+    """
+    YouTubeのURLから音声データを取得します。
+
+    Args:
+        url (str): YouTubeのURL。
+
+    Returns:
+        tuple[Optional[discord.FFmpegPCMAudio], Optional[str]]: 音声データとタイトルのタプル。失敗した場合は(None, None)。
+    """
     ydl_opts = {
         'format': 'bestaudio/best',
         'postprocessors': [{
