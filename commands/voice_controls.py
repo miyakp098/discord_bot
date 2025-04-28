@@ -1,6 +1,5 @@
 import discord
-from utils.youtube import get_youtube_audio
-from utils.voice import connect_to_voice_channel
+from utils.voice import connect_to_voice_channel, get_audio_source
 
 def setup_control_commands(bot: discord.ext.commands.Bot) -> None:
     """
@@ -82,7 +81,7 @@ def setup_control_commands(bot: discord.ext.commands.Bot) -> None:
         if not voice_client:
             return
 
-        audio_source, title = await get_youtube_audio(url)
+        audio_source, title = await get_audio_source(url)
         if not audio_source:
             await ctx.send("音源の取得に失敗しました。")
             return
